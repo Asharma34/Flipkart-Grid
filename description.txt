@@ -1,0 +1,39 @@
+
+Approach:
+
+Our approach to the problem is somewhat similar to the SSD implementation except the fact that we are using a 1 conv layer feature extraxtor instead of the original VGG implementation.No feature preprocessing was done.
+
+Architecture:
+Ours is a very simple model which uses one conv layer and for feature extraction and then feeds it to the subsequent conv layers which generates features for the detection of larger objects(smaller the receptive field greater more difficult it is to detect smaller objects).All the features extracted were average pooled to create a 1*1 receptive field which were all stacked and then fed to fully connected which was then connected to a fc layer of output size 4 (i.e. target).As the given data had only one bounding box so anchors were not required.As already mentioned we have used 4 conv layers followed by a fully connected layer. The network is very small (owing to system constraints).
+
+Loss:
+The loss function used here was the l2-regression loss. IoU loss couldn't be implemented because of being non-differentiable but a differentiable form of IoU would have provided drastic improvements in result.
+
+Implementing:
+The model was initialized using Xavier initialisation and ran for only 15 epochs with learning rate starting from 0.05 and decreasing with step of 1.414 after every epoch and finally concluding at 0.0002768. With only 15 epochs and with such a small architecture we got an IoU of > 80%.
+
+Result:
+Our small model within 15 epoch gave an sqaured error loss of 3290(approx) and an IoU of > 80%.
+
+Expectations:
+Our results would improve significantly if more conv layers would have been used initially for feature extraction. Adding an fc layer would also have improved our performance. Due to lack of resources we could test only 1 model which itself ran for more than 20 hours on our system(CPU).
+
+Conclusion:
+Concluding our somewhat similar SSD implementation of only 4 conv and 1 fc layer with only 15 epochs reached an IoU of > 80%.
+
+
+
+
+Files:
+ops.py -- functions for performing the convolution and fully connected batch normalisation.
+
+model_arcitecture.py-- architecture of the neural network along with the loss and training optimizer.
+
+take_input.py ---functions for displaying images, and taking input to the model
+
+run_model.py -- function for running the architecture
+
+predict.py -- for making prediction for test files.
+
+
+
